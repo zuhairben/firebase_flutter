@@ -1,0 +1,68 @@
+plugins {
+    id "com.android.application"
+    id "com.google.gms.google-services" // Firebase plugin
+    id "kotlin-android" // Kotlin plugin
+    id "dev.flutter.flutter-gradle-plugin" // Flutter plugin
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+android {
+    namespace = "com.example.firebase_flutter"
+    compileSdk = 34 // Ensure this matches your desired compileSdk version
+    ndkVersion = "25.1.8937393" // Or the version appropriate for your setup
+
+    defaultConfig {
+        applicationId "com.example.firebase_flutter"
+        minSdkVersion 23 // Updated to meet Firebase library requirements
+        targetSdkVersion 34 // Update to the latest supported targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+
+        // Ensures compatibility with certain libraries
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation "androidx.multidex:multidex:2.0.1" // Adds MultiDex support for larger apps
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
+}
+
