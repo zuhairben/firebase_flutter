@@ -1,30 +1,35 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:firebase_flutter/main.dart';
+import 'package:firebase_flutter/main.dart'; // Replace with your actual project name or file path
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('UI Tests for Main Screen', () {
+    testWidgets('Verify presence of image and texts on the UI', (WidgetTester tester) async {
+      // Build the app and trigger a frame
+      await tester.pumpWidget(const MyApp()); // Replace `MyApp` with your app's main widget name
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verify that the image is displayed
+      expect(find.byType(Image), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Verify that the expected texts are displayed
+      expect(find.text('Your Image Title'), findsOneWidget); // Replace with your actual title text
+      expect(find.text('This is some description text'), findsOneWidget); // Replace with your description text
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    testWidgets('Check interaction with buttons (if any)', (WidgetTester tester) async {
+      // Build the app and trigger a frame
+      await tester.pumpWidget(const MyApp());
+
+      // If there is a button, check its presence
+      expect(find.byType(ElevatedButton), findsOneWidget); // Replace ElevatedButton with the actual button type
+
+      // If button functionality exists, simulate tapping it
+      await tester.tap(find.byType(ElevatedButton)); // Replace with the correct finder if needed
+      await tester.pump();
+
+      // Verify the expected behavior after tapping (if applicable)
+      // Example: If tapping the button changes some text
+      // expect(find.text('Updated Text'), findsOneWidget);
+    });
   });
 }
