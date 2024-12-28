@@ -1,101 +1,212 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_flutter/auth/AuthService.dart';
-import 'package:firebase_flutter/auth/login_screen.dart';
-import 'package:firebase_flutter/auth/signup_screen.dart';
-import 'package:firebase_flutter/home/home.dart';
 import 'package:flutter/material.dart';
 
-
 void main() {
-
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-
-    Firebase.initializeApp();
-
     return MaterialApp(
-      title: 'Firebase App',
-      theme: ThemeData(
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Weekly Expense",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.grey),
+                      ),
+                      child: const Text(
+                        "View Report",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  "From 1 - 6 Apr, 2024",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 400,
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 45,
+                          right: 161,
+                          child: CircleAvatar(
+                            radius: 125,
+                            backgroundColor: Colors.purple.shade100,
+                            child: const Text(
+                              "48%",
+                              style: TextStyle(
+                                fontSize: 48,
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          left: 250,
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundColor: Colors.green.shade100,
+                            child: const Text(
+                              "32%",
+                              style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 190,
+                          right: 50,
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.red.shade100,
+                            child: const Text(
+                              "13%",
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 170,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.orange.shade100,
+                            child: const Text(
+                              "7%",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(color: Colors.grey),
+                const SizedBox(height: 10),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        LegendItem(
+                          color: Colors.purple,
+                          title: "Grocery",
+                          amount: "\$758.20",
+                        ),
+                        LegendItem(
+                          color: Colors.green,
+                          title: "Food & Drink",
+                          amount: "\$758.20",
+                        ),
+                      ],
+                    ),
+                    const Divider(color: Colors.grey),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        LegendItem(
+                          color: Colors.red,
+                          title: "Shopping",
+                          amount: "\$758.20",
+                        ),
+                        LegendItem(
+                          color: Colors.orange,
+                          title: "Transportation",
+                          amount: "\$758.20",
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      home: const HomeScreen(),
     );
   }
 }
 
-class HomeScreen extends StatefulWidget{
+class LegendItem extends StatelessWidget {
+  final Color color;
+  final String title;
+  final String amount;
 
-  const HomeScreen({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _HomeScreen();
-}
-
-class _HomeScreen extends State<HomeScreen>{
-
-
-
-  late String screenState;
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    screenState = "Login";
-  }
-
-  void login(String email, String password) async{
-    String? response = await AuthService().login(email: email, password: password);
-
-    if(response!=null){
-      if(response == "Success"){
-        changeScreen("Home");
-      }
-    }
-
-
-  }
-
-  void signup(String email, String password) async{
-    String? response = await AuthService().registration(email: email, password: password);
-
-    if(response!=null){
-      if(response == "Success"){
-        changeScreen("Login");
-      }
-    }
-
-
-  }
-
-
-
-  void changeScreen(String screen)=>{
-
-    setState(() {
-      screenState= screen;
-    })
-  };
+  const LegendItem({
+    super.key,
+    required this.color,
+    required this.title,
+    required this.amount,
+  });
 
   @override
   Widget build(BuildContext context) {
-
-
-    switch(screenState){
-      case "Login": return LoginScreen(login: (String email,String password) => {login(email, password)} ,signup: ()=>{changeScreen("Signup")});
-      case "Home": return HomePage();
-      case "Signup": return SignupScreen(signup: (String email,String password) => {signup(email, password)});
-    }
-    return LoginScreen(login: (String email,String password) => {login(email, password)},signup: ()=>{changeScreen("Signup")});
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 5,
+          backgroundColor: color,
+        ),
+        const SizedBox(width: 5),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: color,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          amount,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ],
+    );
   }
 }
