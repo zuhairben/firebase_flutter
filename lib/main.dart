@@ -3,7 +3,6 @@ import 'package:firebase_flutter/auth/AuthService.dart';
 import 'package:firebase_flutter/auth/login_screen.dart';
 import 'package:firebase_flutter/auth/signup_screen.dart';
 import 'package:firebase_flutter/home/home.dart'; // Updated to display Firestore data
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore dependency
 import 'package:flutter/material.dart';
 
 void main() async {
