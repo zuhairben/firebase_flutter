@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
                       children: [
                         Positioned(
                           top: 45,
-                          right: 161,
+                          right: 160,
                           child: CircleAvatar(
                             radius: 125,
                             backgroundColor: Colors.purple.shade100,
@@ -127,11 +127,11 @@ class MyApp extends StatelessWidget {
                 ),
                 const Divider(color: Colors.grey),
                 const SizedBox(height: 10),
-                Column(
+                const Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         LegendItem(
                           color: Colors.purple,
                           title: "Grocery",
@@ -144,11 +144,11 @@ class MyApp extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Divider(color: Colors.grey),
-                    const SizedBox(height: 10),
+                    Divider(color: Colors.grey),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         LegendItem(
                           color: Colors.red,
                           title: "Shopping",
