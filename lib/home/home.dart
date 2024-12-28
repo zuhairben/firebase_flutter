@@ -12,13 +12,12 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.pink.shade50,
+        backgroundColor: Colors.pink.shade100,
         title: const Text(
           "Details",
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
-            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
@@ -46,7 +45,7 @@ class HomePage extends StatelessWidget {
             } else if (state is ProductError) {
               return Center(child: Text('Error: ${state.message}'));
             } else if (state is ProductLoaded) {
-              final product = state.products.first; // Displaying one product for the UI
+              final product = state.products.first;
               return Container(
                 color: Colors.pink.shade50,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -56,42 +55,26 @@ class HomePage extends StatelessWidget {
                     // Image Section
                     Center(
                       child: Stack(
-                        alignment: Alignment.center,
+                        alignment: Alignment.topCenter,
                         children: [
-                          Container(
-                            width: 200,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  blurRadius: 8,
-                                  spreadRadius: 4,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                          ),
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
+                            borderRadius: BorderRadius.circular(150),
                             child: Image.network(
                               product.imageUrl,
-                              width: 180,
-                              height: 180,
+                              width: 400,
+                              height: 400,
                               fit: BoxFit.cover,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Product Details
+                    const SizedBox(height: 30),
+                    // Product Title
                     Text(
                       product.name,
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -100,50 +83,54 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Each (${product.weightRange})',
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 18,
                         color: Colors.blueGrey,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
+                    // Ratings Section
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.star, color: Colors.amber.shade600, size: 16),
+                        Icon(Icons.star, color: Colors.amber.shade600, size: 18),
                         const SizedBox(width: 4),
                         Text(
                           '${product.rating.toStringAsFixed(1)} (${product.totalReviews})',
                           style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.blueGrey,
+                            fontSize: 18,
+                            color: Colors.black,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
+                    // Product Description
                     Text(
                       product.description,
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 17),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
+                    // Delivery and Quantity
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Delivery Time',
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.shade600,
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               product.deliveryTime,
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ],
                         ),
@@ -157,7 +144,7 @@ class HomePage extends StatelessWidget {
                             ),
                             Text(
                               '${product.quantity}',
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 18),
                             ),
                             IconButton(
                               onPressed: () {
@@ -169,47 +156,52 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Spacer(),
-                    // Footer Section
+                    const SizedBox(height: 40,),
+                    // Price and Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Total Price',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade600,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Price',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '\$${(product.price * product.quantity).toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          '\$${(product.price * product.quantity).toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        ElevatedButton(
+                          onPressed: () {
+                            // Add to cart
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                            backgroundColor: Colors.pink,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Add to cart',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add to cart
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.pink,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Add to cart',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
                     ),
                   ],
                 ),
