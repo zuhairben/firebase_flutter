@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_flutter/auth/AuthService.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
       appBar: AppBar(
         title: Text(
           "Team Sync",
-          style: GoogleFonts.nunito(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -42,7 +41,7 @@ class _LoginScreen extends State<LoginScreen> {
               Text(
                 "Welcome Back!",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.nunito(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF323130),
@@ -52,7 +51,7 @@ class _LoginScreen extends State<LoginScreen> {
               Text(
                 "Login to continue",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.nunito(
+                style: TextStyle(
                   fontSize: 16,
                   color: const Color(0xFF605E5C),
                 ),
@@ -117,7 +116,7 @@ class _LoginScreen extends State<LoginScreen> {
                 },
                 child: Text(
                   "Login",
-                  style: GoogleFonts.nunito(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -128,7 +127,7 @@ class _LoginScreen extends State<LoginScreen> {
                 onPressed: widget.signup,
                 child: Text(
                   "Don't have an account? Sign Up",
-                  style: GoogleFonts.nunito(
+                  style: TextStyle(
                     color: const Color(0xFF4A69BD),
                     fontWeight: FontWeight.bold,
                   ),

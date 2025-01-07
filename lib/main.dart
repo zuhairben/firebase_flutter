@@ -1,17 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_flutter/auth/AuthService.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_flutter/provider/AuthProvider.dart';
 import 'package:firebase_flutter/auth/login_screen.dart';
 import 'package:firebase_flutter/auth/signup_screen.dart';
 import 'package:firebase_flutter/home/home.dart';
-import 'package:firebase_flutter/tasks/add_task_page.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_flutter/dashboard/admin_dashboard.dart';
 import 'package:firebase_flutter/dashboard/team_member_dashboard.dart';
-
+import 'package:firebase_flutter/tasks/add_task_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensures Firebase initializes before running
-  await Firebase.initializeApp(); // Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,40 +20,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Team Sync',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomeScreen(),
-        '/home': (context) => const HomePage(),
-        '/adminDashboard': (context) => AdminDashboard(),
-        '/teamMemberDashboard': (context) => TeamMemberDashboard(),
-        '/signup': (context) => SignupScreen(
-          signup: (email, password, role) {
-            Navigator.pushReplacementNamed(context, '/');
-          },
-          login: () {
-            Navigator.pushReplacementNamed(context, '/');
-          },
+    return ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: MaterialApp(
+        title: 'Team Sync',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
-        '/addTask': (context) => AddTaskPage(),
-      },
-
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomeScreen(),
+          '/home': (context) => const HomePage(),
+          '/adminDashboard': (context) => AdminDashboard(),
+          '/teamMemberDashboard': (context) => TeamMemberDashboard(),
+          '/signup': (context) => SignupScreen(
+            signup: (email, password, role) {
+              Provider.of<AuthProvider>(context, listen: false)
+                  .register(email: email, password: password, role: role);
+              Navigator.pushReplacementNamed(context, '/');
+            },
+            login: () {
+              Navigator.pushReplacementNamed(context, '/');
+            },
+          ),
+          '/addTask': (context) => AddTaskPage(),
+        },
+      ),
     );
   }
 }
-
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -66,25 +68,34 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void login(String email, String password) async {
-    String? response = await AuthService().login(email: email, password: password);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    String? response = await authProvider.login(email: email, password: password);
 
-    if (response != null) {
-      if (response == "Success") {
-        changeScreen("Home");
-      }
+    if (response != null && response == "Success") {
+      changeScreen("Home");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response ?? 'Error during login')),
+      );
     }
   }
 
   void signup(String email, String password, String role) async {
-    String? response = await AuthService().registration(email: email, password: password, role: role);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    String? response = await authProvider.register(
+      email: email,
+      password: password,
+      role: role,
+    );
 
-    if (response != null) {
-      if (response == "Success") {
-        changeScreen("Login");
-      }
+    if (response != null && response == "Success") {
+      changeScreen("Login");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response ?? 'Error during signup')),
+      );
     }
   }
-
 
   void changeScreen(String screen) {
     setState(() {
@@ -104,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return const HomePage();
       case "Signup":
         return SignupScreen(
-          signup: (String email, String password, String role) => signup(email, password, role),
+          signup: (String email, String password, String role) =>
+              signup(email, password, role),
           login: () => changeScreen("Login"),
         );
     }
@@ -114,4 +126,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

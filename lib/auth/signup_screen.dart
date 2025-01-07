@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignupScreen extends StatefulWidget {
   final void Function(String email, String password, String role) signup;
@@ -24,7 +23,7 @@ class _SignupScreen extends State<SignupScreen> {
       appBar: AppBar(
         title: Text(
           "Team Sync",
-          style: GoogleFonts.nunito(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -42,7 +41,7 @@ class _SignupScreen extends State<SignupScreen> {
               Text(
                 "Create an Account",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.nunito(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF323130),
@@ -52,7 +51,7 @@ class _SignupScreen extends State<SignupScreen> {
               Text(
                 "Sign up to get started",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.nunito(
+                style: TextStyle(
                   fontSize: 16,
                   color: const Color(0xFF605E5C),
                 ),
@@ -144,7 +143,7 @@ class _SignupScreen extends State<SignupScreen> {
                 },
                 child: Text(
                   "Sign Up",
-                  style: GoogleFonts.nunito(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -157,7 +156,7 @@ class _SignupScreen extends State<SignupScreen> {
                 children: [
                   Text(
                     "Already signed up?",
-                    style: GoogleFonts.nunito(
+                    style: TextStyle(
                       color: const Color(0xFF605E5C),
                     ),
                   ),
@@ -165,7 +164,7 @@ class _SignupScreen extends State<SignupScreen> {
                     onPressed: widget.login,
                     child: Text(
                       "Log in",
-                      style: GoogleFonts.nunito(
+                      style: TextStyle(
                         color: const Color(0xFF4A69BD),
                         fontWeight: FontWeight.bold,
                       ),
